@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from ..src.gilded_rose import GildedRose
+from ..src.gilded_rose import GildedRose# , BackstagePassItem
 from ..src.item import Item
 
 
@@ -9,14 +9,14 @@ class GildedRoseTest(unittest.TestCase):
     def test_foo(self):
         items = [Item("foo", 0, 0)]
         gilded_rose = GildedRose(items)
-        gilded_rose.update_quality()
+        gilded_rose.update()
         self.assertEqual("foo", items[0].name)
 
 
     def test_quality_of_item_never_negative(self):
         items = [Item("Test Item", 0, 0)]
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         self.assertEqual(items[0].quality, 0)
 
 
@@ -24,7 +24,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Test Item", 5, 20)]
         sellin_value_before = items[0].sell_in
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         sellin_value_after = items[0].sell_in
         self.assertEqual(sellin_value_before - sellin_value_after, 1)
 
@@ -33,7 +33,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Test Item", 5, 20)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertTrue(quality_value_after < quality_value_before)
 
@@ -42,7 +42,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Aged Brie", 5, 20)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertTrue(quality_value_after > quality_value_before)
 
@@ -51,7 +51,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Aged Brie", 5, 50)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertEqual(quality_value_after, quality_value_before)
 
@@ -60,10 +60,10 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Test Item", 1, 50)]
         quality_value_1 = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_2 = items[0].quality
         rate_of_quality_decrease_before_sell_by_date = quality_value_2 - quality_value_1
-        rose.update_quality()
+        rose.update()
         quality_value_3 = items[0].quality
         rate_of_quality_decrease_after_sell_by_date = quality_value_3 - quality_value_2
         self.assertEqual(2 * rate_of_quality_decrease_before_sell_by_date, rate_of_quality_decrease_after_sell_by_date)
@@ -73,16 +73,16 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Sulfuras, Hand of Ragnaros", 10, 20)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertEqual(quality_value_before, quality_value_after)
 
 
     def test_backstage_passes_quality_increases_if_sellin_date_more_than_10_days(self):
-        items = [Item("Backstage passes to a TAFKAL80ETC concert", 11, 20)]
+        items = [Item.create_item("Backstage passes to a TAFKAL80ETC concert", 11, 20)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertEqual(quality_value_before, quality_value_after - 1)
 
@@ -91,7 +91,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Backstage passes to a TAFKAL80ETC concert", 6, 20)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertEqual(quality_value_before, quality_value_after - 2)
 
@@ -100,7 +100,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Backstage passes to a TAFKAL80ETC concert", 1, 20)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertEqual(quality_value_before, quality_value_after - 3)
 
@@ -108,7 +108,7 @@ class GildedRoseTest(unittest.TestCase):
     def test_backstage_passes_quality_is_zero_after_concert(self):
         items = [Item("Backstage passes to a TAFKAL80ETC concert", 0, 20)]
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after_concert = items[0].quality
         self.assertEqual(quality_value_after_concert, 0)
 
@@ -117,7 +117,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("Conjured", 6, 20)]
         quality_value_before = items[0].quality
         rose = GildedRose(items)
-        rose.update_quality()
+        rose.update()
         quality_value_after = items[0].quality
         self.assertEqual(quality_value_after - quality_value_before, 2)
 

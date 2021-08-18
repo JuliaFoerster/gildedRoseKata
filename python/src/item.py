@@ -1,3 +1,5 @@
+# from .gilded_rose import BackstagePassItem
+
 class Item:
     def __init__(self, name, sell_in, quality):
         self.name = name
@@ -7,6 +9,13 @@ class Item:
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
+
+
+    @staticmethod
+    def create_item(name, sell_in, quality):
+        if name == "Backstage passes to a TAFKAL80ETC concert":
+            return BackstagePassItem(name, sell_in, quality)
+        return Item
 
 
     def update(self):
