@@ -20,7 +20,7 @@ class GildedRoseTest(unittest.TestCase):
     def sell_in_decreases_when_day_passed_without_sell(self):
         items = [Item.create_item("Aged Brie", 1, 1)]
         gilded_rose = GildedRose(items)
-        gilded_rose.update_quality()
+        gilded_rose.update()
         self.assertEquals(items[0].sell_in, 0)
 
     def test_quality_goes_up_for_improving_products_backstage_passes(self):
